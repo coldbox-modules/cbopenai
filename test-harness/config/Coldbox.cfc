@@ -14,7 +14,7 @@
 			modulesExternalLocation = [],
 
 			//Implicit Events
-			defaultEvent			= "examples.index",
+			defaultEvent			= "",
 			requestStartHandler		= "",
 			requestEndHandler		= "",
 			applicationStartHandler = "",
@@ -52,28 +52,27 @@
 		interceptors = [
 		];
 
-		// LogBox DSL
+		//LogBox DSL
 		logBox = {
 			// Define Appenders
-			appenders : {
+			appenders = {
+				myConsole : { class : "ConsoleAppender" },
 				files : {
-					class      : "coldbox.system.logging.appenders.RollingFileAppender",
-					properties : {
-						filename : "tester",
-						filePath : "/#appMapping#/logs"
+					class="RollingFileAppender",
+					properties = {
+						filename = "tester", filePath="/#appMapping#/logs"
 					}
-				},
-				console : { class : "coldbox.system.logging.appenders.ConsoleAppender" }
+				}
 			},
 			// Root Logger
-			root  : { levelmax : "DEBUG", appenders : "*" },
+			root = { levelmax="DEBUG", appenders="*" },
 			// Implicit Level Categories
-			info  : [ "coldbox.system" ]
+			info = [ "coldbox.system" ]
 		};
 
 		moduleSettings = {
-			cbopenai = {
-				"apiKey": getSystemSetting( "OPENAI_API_KEY", "" ) 
+			"cbopenai" = {
+				"apiKey" = getSystemSetting( "OPENAI_API_KEY", "" )
 			}
 		};
 
@@ -83,6 +82,7 @@
 	 * Load the Module you are testing
 	 */
 	function afterAspectsLoad( event, interceptData, rc, prc ){
+
 		controller.getModuleService()
 			.registerAndActivateModule(
 				moduleName 		= request.MODULE_NAME,
