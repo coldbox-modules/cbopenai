@@ -252,35 +252,35 @@ component accessors="true" singleton {
 		);
 	}
 
-    /**
-     * Sends a HTTP request to OpenAI and returns the response.
-     * 
-     * @endpoint string
-     * @HTTPMethod string
-     * @contentType string
-     * @payload struct
-     * 
-     * @return struct
-     */
-    private function sendRequest(
-        required string endpoint,
-        string HTTPMethod = "POST",
-        string contentType = "application/json",
-        struct payload = {},
-        array fileParams = []
-    ) {
-        if ( variables.settings.keyExists( "apiKey" ) && variables.settings.apiKey.len() ) {  
-            var response = performHTTPRequest(
-                endpoint = arguments.endpoint,
-                HTTPMethod = arguments.HTTPMethod,
-                contentType = arguments.contentType,
-                payload = arguments.payload,
-                fileParams = arguments.fileParams
-            );
-    
-            if ( response.statusCode contains "200" && isJSON( response.fileContent ) ) {
-                return deserializeJson( response.fileContent );
-            }           
+	/**
+	 * Sends a HTTP request to OpenAI and returns the response.
+	 *
+	 * @endpoint    string
+	 * @HTTPMethod  string
+	 * @contentType string
+	 * @payload     struct
+	 *
+	 * @return struct
+	 */
+	private function sendRequest(
+		required string endpoint,
+		string HTTPMethod  = "POST",
+		string contentType = "application/json",
+		struct payload     = {},
+		array fileParams   = []
+	){
+		if ( variables.settings.keyExists( "apiKey" ) && variables.settings.apiKey.len() ) {
+			var response = performHTTPRequest(
+				endpoint    = arguments.endpoint,
+				HTTPMethod  = arguments.HTTPMethod,
+				contentType = arguments.contentType,
+				payload     = arguments.payload,
+				fileParams  = arguments.fileParams
+			);
+
+			if ( response.statusCode contains "200" && isJSON( response.fileContent ) ) {
+				return deserializeJSON( response.fileContent );
+			}
 
 			throw( type = "BadRequest", message = response.fileContent );
 		}
@@ -292,40 +292,51 @@ component accessors="true" singleton {
 	}
 
 
-    /**
-     * Actually performs the HTTP request. Good for mocking in tests also.
-     *
-     * @return struct
-     */
-    private function performHTTPRequest(
-        required string endpoint,
-        string HTTPMethod = "POST",
-        string contentType = "application/json",
-        struct payload = {},
-        array fileParams = []
-    ) {
+	/**
+	 * Actually performs the HTTP request. Good for mocking in tests also.
+	 *
+	 * @return struct
+	 */
+	private function performHTTPRequest(
+		required string endpoint,
+		string HTTPMethod  = "POST",
+		string contentType = "application/json",
+		struct payload     = {},
+		array fileParams   = []
+	){
+		var response = "";
+		cfhttp(
+			url    = "#arguments.endpoint#",
+			method = "#arguments.HTTPMethod#",
+			result = "response"
+		) {
+			if ( arguments.contentType != "multipart/form-data" ) {
+				cfhttpparam(
+					type  = "header",
+					name  = "Content-Type",
+					value = "#arguments.contentType#"
+				);
+			}
+			cfhttpparam(
+				type  = "header",
+				name  = "Authorization",
+				value = "Bearer #variables.settings.apiKey#"
+			);
+			if ( arguments.HTTPMethod == "POST" && arguments.contentType == "application/json" ) {
+				cfhttpparam( type = "body", value = "#serializeJSON( arguments.payload )#" );
+			} else {
+				payload.each( function( key, value ){
+					if ( arrayFindNoCase( fileParams, key ) ) {
+						cfhttpparam( type = "file", name = key, file = value );
+					} else {
+						cfhttpparam( type = "formField", name = key, value = value );
+					}
+				} );
+			}
+		}
 
-        var response = "";
-        cfhttp( url="#arguments.endpoint#", method="#arguments.HTTPMethod#", result="response" ){
-            if ( arguments.contentType != "multipart/form-data" ) {
-                cfhttpparam( type="header", name="Content-Type", value="#arguments.contentType#" );
-            }
-            cfhttpparam( type="header", name="Authorization", value="Bearer #variables.settings.apiKey#" );
-            if ( arguments.HTTPMethod == "POST" && arguments.contentType == "application/json" ) {
-                cfhttpparam( type="body", value="#serializeJson( arguments.payload )#" );
-            } else {
-                payload.each( function( key, value ) {
-                    if ( arrayFindNoCase( fileParams, key ) ) {
-                        cfhttpparam( type="file", name=key, file=value );    
-                    } else {
-                        cfhttpparam( type="formField", name=key, value=value );    
-                    }
-                } );
-            }
-        }
-        
-        return response;
-    }
+		return response;
+	}
 
 	/**
 	 * Filter only the arguments that have values to send in the HTTP payload.
