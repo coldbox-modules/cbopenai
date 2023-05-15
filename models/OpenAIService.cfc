@@ -252,35 +252,35 @@ component accessors="true" singleton {
 		);
 	}
 
-    /**
-     * Sends a HTTP request to OpenAI and returns the response.
-     * 
-     * @endpoint string
-     * @HTTPMethod string
-     * @contentType string
-     * @payload struct
-     * 
-     * @return struct
-     */
-    private function sendRequest(
-        required string endpoint,
-        string HTTPMethod = "POST",
-        string contentType = "application/json",
-        struct payload = {},
-        array fileParams = []
-    ) {
-        if ( variables.settings.keyExists( "apiKey" ) && variables.settings.apiKey.len() ) {  
-            var response = performHTTPRequest(
-                endpoint = arguments.endpoint,
-                HTTPMethod = arguments.HTTPMethod,
-                contentType = arguments.contentType,
-                payload = arguments.payload,
-                fileParams = arguments.fileParams
-            );
-    
-            if ( response.status_code == "200" && isJSON( response.fileContent ) ) {
-                return deserializeJson( response.fileContent );
-            }           
+	/**
+	 * Sends a HTTP request to OpenAI and returns the response.
+	 *
+	 * @endpoint    string
+	 * @HTTPMethod  string
+	 * @contentType string
+	 * @payload     struct
+	 *
+	 * @return struct
+	 */
+	private function sendRequest(
+		required string endpoint,
+		string HTTPMethod  = "POST",
+		string contentType = "application/json",
+		struct payload     = {},
+		array fileParams   = []
+	){
+		if ( variables.settings.keyExists( "apiKey" ) && variables.settings.apiKey.len() ) {
+			var response = performHTTPRequest(
+				endpoint    = arguments.endpoint,
+				HTTPMethod  = arguments.HTTPMethod,
+				contentType = arguments.contentType,
+				payload     = arguments.payload,
+				fileParams  = arguments.fileParams
+			);
+
+			if ( response.status_code == "200" && isJSON( response.fileContent ) ) {
+				return deserializeJSON( response.fileContent );
+			}
 
 			throw( type = "BadRequest", message = response.fileContent );
 		}
@@ -345,12 +345,12 @@ component accessors="true" singleton {
 	 */
 	private function filterArguments( required struct args ){
 		return args.filter( function( key, value, data ){
-			return !isNull( data[ key ] ) && 
-                (
-                    ( isSimpleValue( value ) && value != "" ) ||
-                    ( isArray( value ) || value.len() ) ||
-                    ( isStruct( value ) || structKeyCount( value ) )
-                );
+			return !isNull( data[ key ] ) &&
+			(
+				( isSimpleValue( value ) && value != "" ) ||
+				( isArray( value ) || value.len() ) ||
+				( isStruct( value ) || structKeyCount( value ) )
+			);
 		} );
 	}
 
