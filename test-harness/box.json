@@ -1,0 +1,29 @@
+{
+    "name":"Tester",
+    "version":"0.0.0",
+    "slug":"tester",
+    "private":true,
+    "description":"",
+    "dependencies":{
+        "coldbox":"^6.0.0",
+        "cbvalidation":"^4.3.0+24"
+    },
+    "devDependencies":{
+        "testbox":"^4.0.0",
+        "route-visualizer":"^1.4.0+24"
+    },
+    "installPaths":{
+        "coldbox":"coldbox/",
+        "testbox":"testbox/",
+        "cbvalidation":"modules/cbvalidation/",
+        "route-visualizer":"modules/route-visualizer/"
+    },
+    "testbox":{
+        "runner":"http://localhost:60299/tests/runner.cfm"
+    },
+    "scripts":{
+        "cfpm":"echo '\".engine/adobe2021/WEB-INF/cfusion/bin/cfpm.sh\"' | run",
+        "cfpm:install":"echo '\".engine/adobe2021/WEB-INF/cfusion/bin/cfpm.sh\" install ${1}' | run",
+        "install:2021":"run-script cfpm:install zip,mysql,debugger"
+    }
+}
