@@ -307,9 +307,9 @@ component accessors="true" singleton {
                 fileParams = arguments.fileParams
             );
     
-            if ( response.status_code == "200" && isJSON( response.fileContent ) ) {
+            if ( response.statusCode contains "200" && isJSON( response.fileContent ) ) {
                 return deserializeJson( response.fileContent );
-            }
+            }           
 
             throw( type="BadRequest", message=response.fileContent );
         }
@@ -332,13 +332,13 @@ component accessors="true" singleton {
     ) {
 
         var response = "";
-        cfhttp( url="#arguments.endpoint#" method="#arguments.HTTPMethod#" result="response" ){
+        cfhttp( url="#arguments.endpoint#", method="#arguments.HTTPMethod#", result="response" ){
             if ( arguments.contentType != "multipart/form-data" ) {
-                cfhttpparam( type="header" name="Content-Type" value="#arguments.contentType#" );
+                cfhttpparam( type="header", name="Content-Type", value="#arguments.contentType#" );
             }
-            cfhttpparam( type="header" name="Authorization" value="Bearer #variables.settings.apiKey#" );
+            cfhttpparam( type="header", name="Authorization", value="Bearer #variables.settings.apiKey#" );
             if ( arguments.HTTPMethod == "POST" && arguments.contentType == "application/json" ) {
-                cfhttpparam( type="body" value="#serializeJson( arguments.payload )#" );
+                cfhttpparam( type="body", value="#serializeJson( arguments.payload )#" );
             } else {
                 payload.each( function( key, value ) {
                     if ( arrayFindNoCase( fileParams, key ) ) {
