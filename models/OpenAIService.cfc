@@ -278,7 +278,7 @@ component accessors="true" singleton {
                 fileParams = arguments.fileParams
             );
     
-            if ( response.statusCode contains "200" && isJSON( response.fileContent ) ) {
+            if ( response.status_code == "200" && isJSON( response.fileContent ) ) {
                 return deserializeJson( response.fileContent );
             }           
 
@@ -334,7 +334,12 @@ component accessors="true" singleton {
 	 */
 	private function filterArguments( required struct args ){
 		return args.filter( function( key, value, data ){
-			return !isEmpty( data[ key ] );
+			return !isNull( data[ key ] ) && 
+                (
+                    ( isSimpleValue( value ) && value != "" ) ||
+                    ( isArray( value ) || value.len() ) ||
+                    ( isStruct( value ) || structKeyCount( value ) )
+                );
 		} );
 	}
 
