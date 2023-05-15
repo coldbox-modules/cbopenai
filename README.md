@@ -31,7 +31,7 @@ var openAIService = getInstance( "OpenAIService@cbopenai" );
 
 ## Usage
 
-**getModels**
+### getModels
 List and describe the various models available in the API. You can refer to the Models documentation to understand what models are available and the differences between them.
 ```javascript
 function getModels()
@@ -39,7 +39,7 @@ function getModels()
 var models = openAIService.getModels();
 ```
 
-**getModel**
+### getModel
 Retrieves a model instance, providing basic information about the model such as the owner and permissioning.
 ```javascript
 function getModel( required string model )
@@ -47,7 +47,7 @@ function getModel( required string model )
 var model = openAIService.getModel( "text-davinci-003" );
 ```
 
-**createModeration**
+### createModeration
 Classifies if text violates OpenAI's Content Policy
 ```javascript
 function createModeration( required string input )
@@ -55,7 +55,7 @@ function createModeration( required string input )
 var moderation = openAIService.createModeration( input="I'm going to murder that sandwhich later." );
 ```
 
-**createCompletion**
+### createCompletion
 Given a prompt, the model will return one or more predicted completions, and can also return the probabilities of alternative tokens at each position.
 
 ```javascript
@@ -81,7 +81,7 @@ function createCompletion(
 var completion = openAIService.createCompletion( prompt="What is 2+2?" );
 ```
 
-**createChatCompletion**
+### createChatCompletion
 Given a list of messages describing a conversation, the model will return a response.
 ```javascript
 function createChatCompletion(
@@ -110,7 +110,7 @@ var completion = openAIService.createChatCompletion(
 )
 ```
 
-**createImage**
+### createImage
 Creates an image given a prompt.
 ```javascript
 function createImage(
@@ -124,7 +124,7 @@ function createImage(
 var images = openAIService.createImage( prompt="A cat with a funny hat.", n=2 ); // create 2 images
 ```
 
-**createImageEdit**
+### createImageEdit
 Creates an edited or extended image given an original image and a prompt.
 ```javascript
 function createImageEdit(
@@ -140,7 +140,7 @@ function createImageEdit(
 var image = openAIService.createImageEdit( image=expandPath( "somefile.png" ) );
 ```
 
-**createImageVariation**
+### createImageVariation
 Creates a variation of a given image.
 ```javascript
 function createImageVariation(
@@ -154,7 +154,7 @@ function createImageVariation(
 var image = openAIService.createImageVariation( image=expandPath( "somefile.png" ) );
 ```
 
-**createEdit**
+### createEdit
 Given a prompt and an instruction, the model will return an edited version of the prompt.
 ```javascript
 function createEdit(
@@ -172,7 +172,7 @@ var edit = openAIService.createEdit(
 );
 ```
 
-**createdEmbedding**
+### createdEmbedding
 Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.
 ```javascript
 function createEmbedding(
@@ -184,7 +184,7 @@ function createEmbedding(
 var embedding = openAIService.createEmbedding( input="The food was delicious and the waiter..." );
 ```
 
-**createAudioTranscription**
+### createAudioTranscription
 Transcribes audio into the input language.
 
 ```javascript
@@ -202,7 +202,7 @@ var text = openAIService.createAudioTranscription(
 ); 
 ```
 
-**createAudioTranslation**
+### createAudioTranslation
 Translates audio into into English.
 
 ```javascript
