@@ -270,3 +270,4 @@ If CBOPENAI makes you happy, please consider becoming an Ortus [Patreon supporte
 -   API Docs: https://apidocs.ortussolutions.com/#/coldbox-modules/cbopenai/
 -   GitHub Repository: https://github.com/coldbox-modules/cbopenai
 -   Issue Tracker: https://github.com/coldbox-modules/cbopenai/issues
+-   ITB 2023 Practical AI session: https://docs.google.com/presentation/d/1xXlGBs_kNZhrAgS8xxJ4T5NFev2nH4FAaZ3DXYt8wqQ/edit?usp=sharing
