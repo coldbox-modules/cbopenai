@@ -1,6 +1,6 @@
 {
     "name":"cbopenai",
-    "version":"1.0.1",
+    "version":"1.1.0",
     "location":"https://downloads.ortussolutions.com/ortussolutions/coldbox-modules/cbopenai/@build.version@/cbopenai-@build.version@.zip",
     "author":"Ortus Solutions <info@ortussolutions.com>",
     "homepage":"https://github.com/coldbox-modules/cbopenai",
